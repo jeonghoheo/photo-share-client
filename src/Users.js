@@ -31,10 +31,19 @@ const Users = () => {
 };
 
 const UserLIst = ({ count, users, refetchUsers }) => {
-  const [addFakeUsers] = useMutation(ADD_FAKE_USERS_MUTATION);
   const variables = {
     count: 1
   };
+  const refetchQueries = [
+    {
+      query: ROOT_QUERY
+    }
+  ];
+  const [addFakeUsers] = useMutation(ADD_FAKE_USERS_MUTATION, {
+    variables,
+    refetchQueries
+  });
+
   return (
     <div>
       <p>{count} Users</p>
@@ -45,15 +54,7 @@ const UserLIst = ({ count, users, refetchUsers }) => {
       >
         다시 가져오기
       </button>
-      <button
-        onClick={() =>
-          addFakeUsers({
-            variables
-          })
-        }
-      >
-        임시 사용자 추가
-      </button>
+      <button onClick={() => addFakeUsers()}>임시 사용자 추가</button>
       <ul>
         {users.map(user => (
           <UserLIstItem key={user.name} name={user.name} avatar={user.avatar} />
