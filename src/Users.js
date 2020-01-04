@@ -15,6 +15,7 @@ const ADD_FAKE_USERS_MUTATION = gql`
 
 const Users = () => {
   const { data, loading, refetch } = useQuery(ROOT_QUERY);
+
   return (
     <>
       {loading ? (
