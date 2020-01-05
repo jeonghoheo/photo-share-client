@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { gql } from "apollo-boost";
 import dotenv from "dotenv";
 import { ROOT_QUERY } from "./App";
+import Me from "./Me";
 dotenv.config();
 
 const GITHUB_AUTH_MUTATION = gql`
@@ -47,9 +48,11 @@ const AuthorizedUser = props => {
   }, [githubAuthMutation]);
 
   return (
-    <button onClick={requestCode} disabled={signingIn}>
-      깃허브 로그인
-    </button>
+    <Me
+      signingIn={signingIn}
+      requestCode={requestCode}
+      logout={() => localStorage.removeItem("token")}
+    />
   );
 };
 
