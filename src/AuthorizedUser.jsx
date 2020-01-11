@@ -29,7 +29,7 @@ const AuthorizedUser = props => {
     setSigningIn(true);
   };
 
-  const [githubAuthMutation] = useMutation(GITHUB_AUTH_MUTATION, {
+  const [githubAuthMutation, { client }] = useMutation(GITHUB_AUTH_MUTATION, {
     refetchQueries,
     update: authorizationComplete
   });
@@ -51,7 +51,12 @@ const AuthorizedUser = props => {
     <Me
       signingIn={signingIn}
       requestCode={requestCode}
-      logout={() => localStorage.removeItem("token")}
+      logout={() => {
+        localStorage.removeItem("token");
+        let data = client.readQuery({ query: ROOT_QUERY });
+        data.me = null;
+        client.writeQuery({ query: ROOT_QUERY, data });
+      }}
     />
   );
 };

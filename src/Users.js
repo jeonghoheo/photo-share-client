@@ -35,14 +35,16 @@ const UserLIst = ({ count, users, refetchUsers }) => {
   const variables = {
     count: 1
   };
-  const refetchQueries = [
-    {
-      query: ROOT_QUERY
-    }
-  ];
+
+  const updateUserCache = (cache, { data: { addFakeUsers } }) => {
+    let data = cache.readQuery({ query: ROOT_QUERY });
+    data.totalUsers += addFakeUsers.length;
+    data.allUsers = [...data.allUsers, ...addFakeUsers];
+    cache.writeQuery({ query: ROOT_QUERY, data });
+  };
   const [addFakeUsers] = useMutation(ADD_FAKE_USERS_MUTATION, {
     variables,
-    refetchQueries
+    update: updateUserCache
   });
 
   return (
